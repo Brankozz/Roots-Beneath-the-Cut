@@ -150,15 +150,11 @@ def export_unet_ffn2_params(
             zeros_in_pruned = int((np.abs(wb) <= eps_pruned).sum())
             pruned_ratio = zeros_in_pruned / max(1, numel)
 
-            # —— 保存“被剪位置”的索引：二维权重写 (row,col)，一维张量写 idx ——
             if save_pruned_indices:
-                # 被剪的定义：orig 显著非零 & pruned 近零
                 pruned_mask = (np.abs(wa) > eps_pruned) & (np.abs(wb) <= eps_pruned)
 
                 if wa.ndim == 2:
-                    # 直接按矩阵形状提取 (row, col)
                     rc_idx = np.argwhere(pruned_mask)  # shape: (K, 2)
-                    # 即使为空也写出，带表头更清晰
                     np.savetxt(
                         path_idx,
                         rc_idx.astype(np.int64),
@@ -168,7 +164,6 @@ def export_unet_ffn2_params(
                         comments=""
                     )
                 else:
-                    # 一维张量（如 bias）退化为单列 idx
                     idx = np.nonzero(pruned_mask.reshape(-1))[0].astype(np.int64).reshape(-1, 1)
                     np.savetxt(
                         path_idx,

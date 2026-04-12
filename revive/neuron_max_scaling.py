@@ -28,15 +28,15 @@ import pandas as pd
 import glob
 
 SOFTIMPUTE_KWARGS = dict(
-    max_iters=100,                 # 原 200
-    convergence_threshold=1e-4,    # 原 1e-5
+    max_iters=100,
+    convergence_threshold=1e-4,
     init_fill_method="mean",
-    max_rank=50,                   # 新增：限制秩（按需调大/小）
-    n_power_iterations=2,          # 新增：降低每次近似 SVD 的开销
-    verbose=True,                  # 新增：看见每一轮误差，避免“卡住”的错觉
+    max_rank=50,
+    n_power_iterations=2,
+    verbose=True,
 )
 
-FFN2_PATTERN = re.compile(r"(^|\.)(ff\.net\.2)$")  # 精确匹配结尾是 ff.net.2
+FFN2_PATTERN = re.compile(r"(^|\.)(ff\.net\.2)$")
 
 def _is_ffn_fc2(name: str, module: nn.Module) -> bool:
     return isinstance(module, nn.Linear) and FFN2_PATTERN.search(name) is not None
@@ -77,7 +77,7 @@ def _softimpute_fill_all_zeros(linear: nn.Linear) -> bool:
     if np.isnan(X_missing).all():
         return False
 
-    X_completed = softimpute_complete(X_missing)  # 你的函数：会保留观测值
+    X_completed = softimpute_complete(X_missing)
     W_new = torch.from_numpy(X_completed)
 
     with torch.no_grad():
@@ -96,7 +96,7 @@ def softimpute_unet_ffn2(unet: nn.Module) -> int:
     """
     filled_count = 0
     for name, module in unet.named_modules():
-        if _is_ffn_fc2(name, module):   # 你前面定义的匹配函数
+        if _is_ffn_fc2(name, module):
             ok = _softimpute_fill_all_zeros(module)
             if ok:
                 filled_count += 1
@@ -463,13 +463,13 @@ def restore_pruned_weights_rowwise_align_magnitudes(
 def restore_pruned_weights_rowwise_align_sign_with_activation_sort(
     unet_orig: torch.nn.Module,
     unet_pruned: torch.nn.Module,
-    eps_orig: float = 0.0,         # |w_orig| > eps_orig 视为“orig 非零”
-    eps_pruned: float = 0.0,       # |w_pruned| <= eps_pruned 视为“被剪/近零”
-    ffn2_only: bool = True,        # 仅 .ff.net.2.
-    row_min_samples: int = 16,     # 行内估计 μ/σ 的最少样本数
-    layer_min_samples: int = 128,  # 层级回退 μ/σ 的最少样本数
-    gt_rel_margin: float = 1e-6,   # 幅值严格大于行内最大值的相对裕量
-    gt_abs_margin: float = 1e-12,  # 幅值严格大于行内最大值的绝对裕量（与相对取较大）
+    eps_orig: float = 0.0,
+    eps_pruned: float = 0.0,
+    ffn2_only: bool = True,
+    row_min_samples: int = 16,
+    layer_min_samples: int = 128,
+    gt_rel_margin: float = 1e-6,
+    gt_abs_margin: float = 1e-12,
     Mag_seed = 123,
     align_prob: float = 1.0,
     global_sample = True,
@@ -652,13 +652,13 @@ def restore_pruned_weights_rowwise_align_sign_with_activation_sort(
 def restore_pruned_weights_with_csv(
         unet_pruned: torch.nn.Module,
         path: str = None,
-        eps_orig: float = 0.0,  # |w_orig| > eps_orig 视为“orig 非零”
-        eps_pruned: float = 0.0,  # |w_pruned| <= eps_pruned 视为“被剪/近零”
-        ffn2_only: bool = True,  # 仅 .ff.net.2.
-        row_min_samples: int = 16,  # 行内估计 μ/σ 的最少样本数
-        layer_min_samples: int = 128,  # 层级回退 μ/σ 的最少样本数
-        gt_rel_margin: float = 1e-6,  # 幅值严格大于行内最大值的相对裕量
-        gt_abs_margin: float = 1e-12,  # 幅值严格大于行内最大值的绝对裕量（与相对取较大）
+        eps_orig: float = 0.0,
+        eps_pruned: float = 0.0,
+        ffn2_only: bool = True,
+        row_min_samples: int = 16,
+        layer_min_samples: int = 128,
+        gt_rel_margin: float = 1e-6,
+        gt_abs_margin: float = 1e-12,
         Mag_seed=123,
         global_sample=True,
         Max_processing=False,
@@ -858,13 +858,13 @@ def restore_pruned_weights_with_csv(
 def restore_pruned_weights_rowwise_strict_align_sign(
     unet_orig: torch.nn.Module,
     unet_pruned: torch.nn.Module,
-    eps_orig: float = 0.0,         # |w_orig| > eps_orig 视为“orig 非零”
-    eps_pruned: float = 0.0,       # |w_pruned| <= eps_pruned 视为“被剪/近零”
-    ffn2_only: bool = True,        # 仅 .ff.net.2.
-    row_min_samples: int = 16,     # 行内估计 μ/σ 的最少样本数
-    layer_min_samples: int = 128,  # 层级回退 μ/σ 的最少样本数
-    gt_rel_margin: float = 1e-6,   # 幅值严格大于行内最大值的相对裕量
-    gt_abs_margin: float = 1e-12,  # 幅值严格大于行内最大值的绝对裕量（与相对取较大）
+    eps_orig: float = 0.0,
+    eps_pruned: float = 0.0,
+    ffn2_only: bool = True,
+    row_min_samples: int = 16,
+    layer_min_samples: int = 128,
+    gt_rel_margin: float = 1e-6,
+    gt_abs_margin: float = 1e-12,
     seed: Optional[int] = 123,
     align_prob: float = 1.0,
 ) -> Dict[str, Any]:
@@ -1031,12 +1031,12 @@ def restore_pruned_weights_rowwise_strict_align_sign_with_3_modules(
     unet_orig: torch.nn.Module,
     unet_pruned: torch.nn.Module,
     unet_real_orig: torch.nn.Module,
-    eps_orig: float = 0.0,         # |w_orig| > eps_orig 视为“orig 非零”
-    eps_pruned: float = 0.0,       # |w_pruned| <= eps_pruned 视为“被剪/近零”
-    ffn2_only: bool = True,        # 仅 .ff.net.2.
-    row_min_samples: int = 16,     # 行内估计 μ/σ 的最少样本数
-    layer_min_samples: int = 128,  # 层级回退 μ/σ 的最少样本数
-    gt_rel_margin: float = 1e-6,   # 幅值严格大于行内最大值的相对裕量
+    eps_orig: float = 0.0,
+    eps_pruned: float = 0.0,
+    ffn2_only: bool = True,
+    row_min_samples: int = 16,
+    layer_min_samples: int = 128,
+    gt_rel_margin: float = 1e-6,
     gt_abs_margin: float = 1e-12,
     Max_processing=True,
     Ave_processing=True,
@@ -1221,12 +1221,12 @@ def restore_pruned_weights_rowwise_strict_align_sign_with_iter_model(
     unet_orig: torch.nn.Module,
     unet_pruned: torch.nn.Module,
     # unet_real_orig: torch.nn.Module,
-    eps_orig: float = 0.0,         # |w_orig| > eps_orig 视为“orig 非零”
-    eps_pruned: float = 0.0,       # |w_pruned| <= eps_pruned 视为“被剪/近零”
-    ffn2_only: bool = True,        # 仅 .ff.net.2.
-    row_min_samples: int = 16,     # 行内估计 μ/σ 的最少样本数
-    layer_min_samples: int = 128,  # 层级回退 μ/σ 的最少样本数
-    gt_rel_margin: float = 1e-6,   # 幅值严格大于行内最大值的相对裕量
+    eps_orig: float = 0.0,
+    eps_pruned: float = 0.0,
+    ffn2_only: bool = True,
+    row_min_samples: int = 16,
+    layer_min_samples: int = 128,
+    gt_rel_margin: float = 1e-6,
     gt_abs_margin: float = 1e-12,
     Max_processing=True,
     Ave_processing=True,
@@ -1431,7 +1431,6 @@ def find_pruned_positions(
                 "a_shape": tuple(wa.shape),
                 "b_shape": tuple(wb.shape),
             }
-            # 不计入汇总
             continue
 
         mask_orig_nonzero = wa.abs() > eps
@@ -1486,7 +1485,7 @@ def get_pruned_param_names(report, min_pruned_count: int = 1):
     """
     pruned_params = []
     for name, info in report["per_param"].items():
-        if info.get("shape_mismatch"):  # 跳过形状不匹配
+        if info.get("shape_mismatch"):
             continue
         if info.get("pruned_count", 0) >= min_pruned_count:
             pruned_params.append(name)
@@ -1500,7 +1499,6 @@ def _parent_module_name(param_name: str):
     """
     if param_name.endswith(".weight") or param_name.endswith(".bias"):
         return param_name.rsplit(".", 1)[0]
-    # 保底：尽量去掉最后一段
     parts = param_name.split(".")
     return ".".join(parts[:-1]) if len(parts) > 1 else param_name
 
@@ -1525,7 +1523,7 @@ def get_pruned_modules(report, min_pruned_count: int = 1):
 
     results = []
     for mod, d in per_mod.items():
-        numel_sum = max(d["numel_sum"], 1)  # 防止除零
+        numel_sum = max(d["numel_sum"], 1)
         pr_ratio = d["pruned_count_sum"] / numel_sum
         results.append((mod, {
             "pruned_count_sum": d["pruned_count_sum"],
@@ -1565,7 +1563,6 @@ def restore_pruned_weights_rowwise_strict_no_signalign(
     a_params = dict(unet_orig.named_parameters())
     b_params = dict(unet_pruned.named_parameters())
 
-    # 名称一致性
     if set(a_params.keys()) != set(b_params.keys()):
         missing_in_a = set(b_params.keys()) - set(a_params.keys())
         missing_in_b = set(a_params.keys()) - set(b_params.keys())
@@ -1581,7 +1578,6 @@ def restore_pruned_weights_rowwise_strict_no_signalign(
 
     target_names = [n for n in sorted(a_params.keys()) if _is_target_weight(n)]
 
-    # —— 全局统计池（仅用 pruned 的“剩余非零”）——
     global_pool = []
     for n in target_names:
         wb = b_params[n].detach().cpu()
@@ -1766,7 +1762,6 @@ def quant_model(unet_pruned: torch.nn.Module) -> Dict[str, Any]:
 
 # def quantize_model_4bit(module):
 #     """
-#     将 nn.Linear 层替换为 bitsandbytes 的 4-bit 量化版本 Linear4bit。
 #     """
 #     if isinstance(module, nn.Linear):
 #         quantized = bnb.nn.Linear4bit(
@@ -1774,13 +1769,11 @@ def quant_model(unet_pruned: torch.nn.Module) -> Dict[str, Any]:
 #             out_features=module.out_features,
 #             bias=module.bias is not None,
 #         )
-#         # 复制权重与偏置
 #         quantized.weight.data = module.weight.data.clone()
 #         if module.bias is not None:
 #             quantized.bias.data = module.bias.data.clone()
 #         return quantized
 #     else:
-#         # 非 Linear 层保持原样
 #         return module
 
 
@@ -1934,7 +1927,7 @@ unet_orig  = model_orig.unet
 # report = restore_ffn2_by_sign_alignment(unet_orig=unet_orig, unet_pruned=unet_pruned)
 # softimpute_unet_ffn2(unet_pruned_2)
 
-mag_seeds_list = [2021, 2022, 2023, 2024, 2025, 2026]  # 你的6个Mag_seed
+mag_seeds_list = [2021, 2022, 2023, 2024, 2025, 2026]
 sign_seeds_list = [2021]
 
 # quant_model(unet_pruned)
@@ -2069,7 +2062,6 @@ main_csv_recover(mag_process=args.magnitude_process, sign_seeds=sign_seeds_list,
 # checkpoint_path = "results_Ci/results_seed_0/stable-diffusion/runwayml/stable-diffusion-v1-5/golf ball/filled_with_zhaojun_signs_and_rest_distribution_seed_2021_0.35_Opposite_seed_222/0.02sparsity_10_timestep_0thre/recoverd_model.pt"
 #
 #
-# # 只保存 UNet 的权重；包含 buffers（用 state_dict()）
 # state_cpu = {k: v.detach().cpu() for k, v in model_pruned.unet.state_dict().items()}
 # torch.save(state_cpu, checkpoint_path)
 # print("saved to:", checkpoint_path)

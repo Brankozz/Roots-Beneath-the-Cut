@@ -12,7 +12,6 @@ import numpy as np
 from argparse import ArgumentParser
 # sys.path.append(os.getcwd())
 from utils import get_prompts, Config, get_sd_model
-# 查看当前工作目录
 os.chdir("/home/cz06540/concept-prune/wanda")
 # print(os.getcwd())
 from neuron_receivers import Wanda
