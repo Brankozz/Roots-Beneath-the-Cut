@@ -1,0 +1,157 @@
+import os
+import sys
+import json
+import torch
+import numpy as np
+import pandas as pd
+from PIL import Image
+from argparse import ArgumentParser
+
+sys.path.append('/home/cz06540/concept-prune')
+from utils import load_models
+from benchmarking_utils import set_benchmarking_path
+from diffusers import StableDiffusionPipeline, UNet2DConditionModel
+
+def input_args():
+    parser = ArgumentParser()
+    parser.add_argument('--gpu', type=int, default=0)
+    parser.add_argument('--seed', type=int, default=0)
+    parser.add_argument('--dbg', type=bool, default=None)
+    parser.add_argument('--target', type=str, default=None)
+    parser.add_argument('--baseline', type=str, default=None)
+    parser.add_argument('--hook_module', type=str, default='unet')
+    parser.add_argument('--ckpt_name', type=str, default=None)
+    parser.add_argument('--model_id', type=str, default='runwayml/stable-diffusion-v1-5')
+    parser.add_argument('--top_ratio', type=float, default=0.8)
+    parser.add_argument('--res_path', type=str, default='results/results_seed_0/stable-diffusion/')
+    return parser.parse_args()
+
+class ArtistDataset(torch.utils.data.Dataset):
+    def __init__(self, prompts):
+        self.prompts = prompts['prompt'].tolist()
+        self.seeds = prompts['evaluation_seed'].tolist()
+
+    def __len__(self):
+        return len(self.prompts)
+
+    def __getitem__(self, idx):
+        prompt = self.prompts[idx]
+        seed = self.seeds[idx]
+        return prompt,  seed
+    
+
+def main():
+    args = input_args()
+    print("Arguments: ", args.__dict__)
+
+    args.benchmarking_result_path = set_benchmarking_path(args)
+    args.benchmarking_result_path = os.path.join(args.benchmarking_result_path, args.model_id, args.target, args.baseline, 'benchmarking', 'concept_erase')
+    print("Benchmarking result path: ", args.benchmarking_result_path)
+    if not os.path.exists(args.benchmarking_result_path):
+        os.makedirs(args.benchmarking_result_path)
+
+    if not os.path.exists(f'{args.benchmarking_result_path}/concept_erase/{args.top_ratio}'):
+        os.makedirs(f'{args.benchmarking_result_path}/concept_erase/{args.top_ratio}')
+
+    # Load datasets
+    data = pd.read_csv(f'../datasets/test_{args.target}.csv')
+    dataset = ArtistDataset(data)
+    dataloader = torch.utils.data.DataLoader(dataset, batch_size=1, shuffle=False)
+
+    os.makedirs(f'/scratch/cz06540/concept_prune_image_chence/{args.target}/Quant', exist_ok=True)
+    os.makedirs(f'/scratch/cz06540/concept_prune_image_chence/{args.target}/pretrain', exist_ok=True)
+
+    # Run the model if the folder is empty
+    if len(os.listdir(f'/scratch/cz06540/concept_prune_image_chence/{args.target}/Quant')) == 0:
+        print("Saving images after removal of concept")
+        
+        # Load original SD model
+        model = StableDiffusionPipeline.from_pretrained(args.model_id, torch_dtype=torch.float16)
+        model = model.to(args.gpu)
+
+        # Load concept erased model
+        remover_model = load_models(args, args.ckpt_name)
+        print("Remover model: ", remover_model)
+
+        for i, (prompt, seed) in enumerate(dataloader):
+            prompt = prompt[0]
+            print(f"Prompt: {prompt}, Seed: {seed}")
+            seed =[0]
+            torch.manual_seed(seed[0])
+            np.random.seed(seed[0])
+            removal_images = remover_model(prompt).images[0]
+
+            torch.manual_seed(seed[0])
+            np.random.seed(seed[0])
+            original_images = model(prompt).images[0]
+
+            # save both images
+            print(f"Saving images for prompt {i}", f'{args.benchmarking_result_path}/concept_erase/{args.top_ratio}/removal_{i}.jpg', f'{args.benchmarking_result_path}/concept_erase/original_{i}.jpg')
+            removal_images.save(f'/scratch/cz06540/concept_prune_image_chence/{args.target}/Quant/removal_{i}.jpg')
+            original_images.save(f'/scratch/cz06540/concept_prune_image_chence/{args.target}/pretrain/original_{i}.jpg')
+    
+    print("Calculating CLIP scores for the images")
+    from transformers import CLIPProcessor, CLIPModel
+    # calculate CLIP scores for the images
+    clip_model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
+    clip_processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
+
+    # Load the images
+    removal_images = [Image.open(f'/scratch/cz06540/concept_prune_image_chence/{args.target}/Quant/removal_{i}.jpg') for i in range(len(data))]
+    original_images = [Image.open(f'/scratch/cz06540/concept_prune_image_chence/{args.target}/pretrain/original_{i}.jpg') for i in range(len(data))]
+
+    # Calculate the CLIP similarity between generated images after removal and prompt
+    scores, similarity = [], []
+    similarity_original = []
+    for iter, (prompt, seed) in enumerate(dataloader):
+        prompt = prompt[0]
+        print(f"Prompt: {prompt}, Seed: {seed}")
+        removal_image = removal_images[iter]
+        original_image = original_images[iter]
+
+        # encode the text
+        text_inputs = clip_processor(prompt, return_tensors="pt", padding=True)
+        text_features = clip_model.get_text_features(**text_inputs)
+
+        # encode the images
+        image_inputs = clip_processor(images=original_image, return_tensors="pt")
+        orig_image_features = clip_model.get_image_features(**image_inputs)
+
+        image_inputs = clip_processor(images=removal_image, return_tensors="pt")
+        removal_image_features = clip_model.get_image_features(**image_inputs)
+        similarity_orig = torch.nn.functional.cosine_similarity(text_features, orig_image_features)
+        similarity_removed = torch.nn.functional.cosine_similarity(text_features, removal_image_features)
+
+        similarity.append(similarity_removed.item())
+        similarity_original.append(similarity_orig.item())
+        score = 1 if similarity_removed < similarity_orig else 0
+        scores.append(score)
+
+    avg_similarity_orig = np.mean(similarity_original)
+    avg_similarity = np.mean(similarity)
+    avg_score = np.mean(scores)
+
+    print(f"Average similarity between prompt and generated image before removal: {avg_similarity_orig}")
+    print(f"Average similarity between prompt and generated image after removal: {avg_similarity}")
+    print(f"Average score between prompt and generated image after removal: {avg_score}")
+
+    # Save the scores
+
+    results = {
+        'ave_similarity_orig': float(avg_similarity_orig),
+        'std_similarity_orig': float(np.std(similarity_original)),
+        'avg_similarity': float(avg_similarity),
+        'avg_score': float(avg_score),
+        'std_similarity': float(np.std(similarity)),
+        'std_score': float(np.std(scores))
+    }
+    # p = args.ckpt_name.split('/')[-1].split('.pt')[0] if args.ckpt_name is not None else 'concept-prune'
+    save_dir = f'./Art_Style_Eva_Unified_on_A100/Quant_Recovered/'
+    os.makedirs(save_dir, exist_ok=True)
+    with open(f'./Art_Style_Eva_Unified_on_A100/Quant_Recovered/clip_scores_{args.target}_VG.json', 'w') as f:
+        json.dump(results, f)
+
+        
+if __name__ == '__main__':
+    main()
+
