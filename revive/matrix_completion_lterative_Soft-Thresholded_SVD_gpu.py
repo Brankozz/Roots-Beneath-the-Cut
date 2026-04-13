@@ -69,7 +69,7 @@ def softimpute_complete(arr: np.ndarray) -> np.ndarray:
         return arr
 
     
-    print("尝试使用 GPU 版本的 SoftImpute ...")
+    print("Trying GPU-based SoftImpute ...")
     
     import cupy as cp
 
@@ -137,19 +137,19 @@ def softimpute_complete(arr: np.ndarray) -> np.ndarray:
     observed_mask_np = ~np.isnan(X_missing)
     X_completed[observed_mask_np] = arr[observed_mask_np]
 
-    print(f"GPU SoftImpute 完成，共 {it} 轮，最终观测位 MAE={mae:.6f}")
+    print(f"GPU SoftImpute done, {it} iters, final observed MAE={mae:.6f}")
     return X_completed
 
 def main():
     if not INPUT_DIR.exists():
-        raise FileNotFoundError(f"未找到输入目录：{INPUT_DIR}")
+        raise FileNotFoundError(f"Input directory not found: {INPUT_DIR}")
 
     files = [INPUT_DIR / f for f in SPECIFIC_FILES] if SPECIFIC_FILES else sorted(INPUT_DIR.glob("*.csv"))
     if not files:
-        print("pruned_csv 目录下没有找到任何 .csv 文件。")
+        print("No .csv files found in pruned_csv directory.")
         return
 
-    print(f"共找到 {len(files)} 个 CSV，将依次处理。输出目录：{OUTPUT_DIR}")
+    print(f"Found {len(files)} CSV files. Output directory: {OUTPUT_DIR}")
 
     for csv_path in files:
         print(f"Processing {csv_path.name} ...")
@@ -158,7 +158,7 @@ def main():
             soft_path = OUTPUT_DIR / f"SoftImpute_{csv_path.name}"
 
             if soft_path.exists():
-                print(f"[跳过] {csv_path.name} 已有结果")
+                print(f"[Skip] {csv_path.name} already processed")
                 continue
 
             X_soft = softimpute_complete(arr)
@@ -166,7 +166,7 @@ def main():
 
 
         except Exception as e:
-            print(f"[失败] {csv_path.name}: {e}")
+            print(f"[Failed] {csv_path.name}: {e}")
 
 if __name__ == "__main__":
     main()
