@@ -16,6 +16,9 @@ Create Environment from the `environment.yml` file.
 
 ```
 cd env
+```
+
+```
 conda env create -f environment.yml
 ```
 
