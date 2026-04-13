@@ -11,3 +11,9 @@ Pruning-based unlearning has recently emerged as a fast, training-free, and data
 ## Experiments
 
 ### Environment Setup
+
+Create Environment from the `environment.yml` file.
+
+```
+conda env create -f env/environment.yml
+```
