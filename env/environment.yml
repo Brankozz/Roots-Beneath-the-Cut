@@ -1,4 +1,4 @@
-name: H100-unlearn
+name: concept_revival
 channels:
   - pytorch
   - nvidia
