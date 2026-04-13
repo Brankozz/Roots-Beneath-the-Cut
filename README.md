@@ -1,5 +1,3 @@
-# Roots-Beneath-the-Cut
-Official implementation of CVPR 2026 "Roots Beneath the Cut: Uncovering the Risk of Concept Revival in Pruning-Based Unlearning for Diffusion Models"
+# Roots Beneath the Cut
 
-
-Code is coming soon!!
+Code for the paper - **Roots Beneath the Cut: Uncovering the Risk of Concept Revival in Pruning-Based Unlearning for Diffusion Models** ([arxiv preprint](https://arxiv.org/abs/2603.06640))
