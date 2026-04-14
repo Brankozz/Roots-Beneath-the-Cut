@@ -7,7 +7,7 @@ import pandas as pd
 from PIL import Image
 from argparse import ArgumentParser
 
-sys.path.append('/home/cz06540/concept-prune')
+# sys.path.append('/home/cz06540/concept-prune')
 from utils import load_models
 from benchmarking_utils import set_benchmarking_path
 from diffusers import StableDiffusionPipeline, UNet2DConditionModel
