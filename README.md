@@ -42,4 +42,4 @@ To obtain the unlearned model for a concept `<target>`, run the following-
 
 &nbsp; Example - base prompt = `a room` and target prompt = `a parachute in a room`
 
-The argument `skill_ratio` denotes the sparsity level which defines the top-k% neurons considered for WANDA pruning. This command saves skilled neurons discovered for every timestep and layer in a different .pkl file as a sparse matrix.
+The argument `skill_ratio` denotes the sparsity level which defines the top-k% neurons considered for WANDA pruning. This command saves skilled neurons discovered for every timestep and layer in a different .pkl file as a sparse matrix. We recommend using `0.02` for all object and artist style tasks, and `0.01` for the nudity task.
