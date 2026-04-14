@@ -111,3 +111,16 @@ To check interference of concept removal with unrelated classes, run
 `python benchmarking/object_erase.py --target <object> --baseline concept-prune --removal_mode keep --ckpt_name <path to checkpoint>`
 
 where `<object>` is the name of a class in ImageNette classes. The script saves images and a json files with ResNet50 accuracies reported in the paper in the `results/` folder.
+
+## Cite us!
+
+If you find our paper useful, please consider citing our work.
+
+```
+@article{zhang2026roots,
+  title={Roots Beneath the Cut: Uncovering the Risk of Concept Revival in Pruning-Based Unlearning for Diffusion Models},
+  author={Zhang, Ci and Ding, Zhaojun and Yang, Chence and Liu, Jun and Zhai, Xiaoming and Huang, Shaoyi and Li, Beiwen and Ma, Xiaolong and Lu, Jin and Yuan, Geng},
+  journal={arXiv preprint arXiv:2603.06640},
+  year={2026}
+}
+```
