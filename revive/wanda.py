@@ -12,7 +12,7 @@ import numpy as np
 from argparse import ArgumentParser
 # sys.path.append(os.getcwd())
 from utils import get_prompts, Config, get_sd_model
-os.chdir("/home/cz06540/concept-prune/wanda")
+# os.chdir("/home/cz06540/concept-prune/revive")
 # print(os.getcwd())
 from neuron_receivers import Wanda
 from transformers.models.clip.modeling_clip import CLIPMLP
