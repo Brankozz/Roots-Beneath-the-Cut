@@ -27,7 +27,7 @@ Create Environment from the `environment.yml` file.
 ### Obtain the Unlearned Model
 
 <p align="center">
-<img src="Image/matrix_completion.png" width="50%">
+<img src="Image/unlearn.png" width="50%">
 </p>
 
 To obtain the unlearned model for a concept `<target>`, run the following-
@@ -53,7 +53,7 @@ The argument `skill_ratio` denotes the sparsity level which defines the top-k% n
 ### Matrix Completion
 
 <p align="center">
-<img src="Image/unlearn.png" width="50%">
+<img src="Image/matrix_completion.png" width="50%">
 </p>
 
 To recover the pruned matrix, run the following-
