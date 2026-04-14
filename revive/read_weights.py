@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 
 from utils import get_prompts, Config, get_sd_model
 sys.path.append(os.getcwd())
-os.chdir("/home/cz06540/concept-prune/wanda")
+# os.chdir("/home/cz06540/concept-prune/revive")
 import seaborn as sns
 from neuron_receivers import Wanda
 from transformers.models.clip.modeling_clip import CLIPMLP
