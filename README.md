@@ -106,7 +106,7 @@ To evaluate related classes, run
 
 `python benchmarking/object_erase.py --target <object> --baseline concept-prune --removal_mode erase --ckpt_name <path to checkpoint>`
 
-To check interference of concept removal with unrelated classes, run
+To check unrelated classes, run
 
 `python benchmarking/object_erase.py --target <object> --baseline concept-prune --removal_mode keep --ckpt_name <path to checkpoint>`
 
