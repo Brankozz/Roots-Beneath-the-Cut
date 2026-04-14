@@ -65,7 +65,7 @@ To recover the pruned matrix, run the following-
 ## Top-K Sign Retention
 
 <p align="center">
-<img src="Image/top_k.png" width="25%">
+<img src="Image/top_k.png" width="40%">
 </p>
 
 To preserve the signs with Top-k magnitudes, run the following-
