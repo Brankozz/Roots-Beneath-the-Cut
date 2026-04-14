@@ -41,3 +41,5 @@ To obtain the unlearned model for a concept `<target>`, run the following-
 &nbsp; 3. Objects (Imagenette classes) - `golf ball, parachute, church, french horn, chain saw, gas pump, candle, mountain bike, racket, school bus, spider web, starfish`.
 
 &nbsp; Example - base prompt = `a room` and target prompt = `a parachute in a room`
+
+The argument `skill_ratio` denotes the sparsity level which defines the top-k% neurons considered for WANDA pruning. This command saves skilled neurons discovered for every timestep and layer in a different .pkl file as a sparse matrix.
