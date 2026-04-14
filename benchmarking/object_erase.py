@@ -9,7 +9,7 @@ from argparse import ArgumentParser
 from torch.utils.data import Subset
 from torchvision.transforms.v2.functional import erase
 
-sys.path.append('/home/cz06540/concept-prune')
+# sys.path.append('/home/cz06540/concept-prune')
 from utils import load_models
 
 from diffusers import StableDiffusionPipeline, UNet2DConditionModel
