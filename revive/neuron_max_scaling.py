@@ -63,7 +63,7 @@ def softimpute_complete(arr: np.ndarray) -> np.ndarray:
     return X_completed
 
 def _softimpute_fill_all_zeros(linear: nn.Linear) -> bool:
-    """把 linear.weight 里所有 ==0 的元素当缺失，用 SoftImpute 补全。"""
+    """Treat all zero elements in linear.weight as missing and complete them via SoftImpute."""
     W = linear.weight.detach()
     device, dtype = W.device, W.dtype
 
@@ -89,10 +89,10 @@ def _softimpute_fill_all_zeros(linear: nn.Linear) -> bool:
 
 def softimpute_unet_ffn2(unet: nn.Module) -> int:
     """
-    遍历整个 UNet，把所有 FFN 第二个全连接层 (ff.net.2.weight)
-    的 0 元素用 SoftImpute 补全。
+    Iterate over the entire UNet and complete all second FFN linear layers (ff.net.2.weight)
+    by filling their zero elements via SoftImpute.
 
-    返回成功补全的层数。
+    Returns the number of successfully completed layers.
     """
     filled_count = 0
     for name, module in unet.named_modules():
@@ -176,9 +176,9 @@ def restore_pruned_weights_rowwise_dynamic_align_sign(
         missing_in_a = set(b_params.keys()) - set(a_params.keys())
         missing_in_b = set(a_params.keys()) - set(b_params.keys())
         raise ValueError(
-            "参数名不一致：\n"
-            f"  只在原模型缺失: {sorted(missing_in_a)}\n"
-            f"  只在剪枝模型缺失: {sorted(missing_in_b)}"
+            "Parameter name mismatch:\n"
+            f"  Missing only in original model: {sorted(missing_in_a)}\n"
+            f"  Missing only in pruned model: {sorted(missing_in_b)}"
         )
 
     def _is_target_weight(n: str) -> bool:
@@ -335,9 +335,9 @@ def restore_pruned_weights_rowwise_align_magnitudes(
         missing_in_a = set(b_params.keys()) - set(a_params.keys())
         missing_in_b = set(a_params.keys()) - set(b_params.keys())
         raise ValueError(
-            "参数名不一致：\n"
-            f"  只在原模型缺失: {sorted(missing_in_a)}\n"
-            f"  只在剪枝模型缺失: {sorted(missing_in_b)}"
+            "Parameter name mismatch:\n"
+            f"  Missing only in original model: {sorted(missing_in_a)}\n"
+            f"  Missing only in pruned model: {sorted(missing_in_b)}"
         )
 
     def _is_target_weight(n: str) -> bool:
@@ -495,9 +495,9 @@ def restore_pruned_weights_rowwise_align_sign_with_activation_sort(
         missing_in_a = set(b_params.keys()) - set(a_params.keys())
         missing_in_b = set(a_params.keys()) - set(b_params.keys())
         raise ValueError(
-            "参数名不一致：\n"
-            f"  只在原模型缺失: {sorted(missing_in_a)}\n"
-            f"  只在剪枝模型缺失: {sorted(missing_in_b)}"
+            "Parameter name mismatch:\n"
+            f"  Missing only in original model: {sorted(missing_in_a)}\n"
+            f"  Missing only in pruned model: {sorted(missing_in_b)}"
         )
 
     def _is_target_weight(n: str) -> bool:
@@ -885,9 +885,9 @@ def restore_pruned_weights_rowwise_strict_align_sign(
         missing_in_a = set(b_params.keys()) - set(a_params.keys())
         missing_in_b = set(a_params.keys()) - set(b_params.keys())
         raise ValueError(
-            "参数名不一致：\n"
-            f"  只在原模型缺失: {sorted(missing_in_a)}\n"
-            f"  只在剪枝模型缺失: {sorted(missing_in_b)}"
+            "Parameter name mismatch:\n"
+            f"  Missing only in original model: {sorted(missing_in_a)}\n"
+            f"  Missing only in pruned model: {sorted(missing_in_b)}"
         )
 
     def _is_target_weight(n: str) -> bool:
@@ -1061,9 +1061,9 @@ def restore_pruned_weights_rowwise_strict_align_sign_with_3_modules(
         missing_in_a = set(b_params.keys()) - set(a_params.keys())
         missing_in_b = set(a_params.keys()) - set(b_params.keys())
         raise ValueError(
-            "参数名不一致：\n"
-            f"  只在原模型缺失: {sorted(missing_in_a)}\n"
-            f"  只在剪枝模型缺失: {sorted(missing_in_b)}"
+            "Parameter name mismatch:\n"
+            f"  Missing only in original model: {sorted(missing_in_a)}\n"
+            f"  Missing only in pruned model: {sorted(missing_in_b)}"
         )
 
     def _is_target_weight(n: str) -> bool:
@@ -1251,9 +1251,9 @@ def restore_pruned_weights_rowwise_strict_align_sign_with_iter_model(
         missing_in_a = set(b_params.keys()) - set(a_params.keys())
         missing_in_b = set(a_params.keys()) - set(b_params.keys())
         raise ValueError(
-            "参数名不一致：\n"
-            f"  只在原模型缺失: {sorted(missing_in_a)}\n"
-            f"  只在剪枝模型缺失: {sorted(missing_in_b)}"
+            "Parameter name mismatch:\n"
+            f"  Missing only in original model: {sorted(missing_in_a)}\n"
+            f"  Missing only in pruned model: {sorted(missing_in_b)}"
         )
 
     def _is_target_weight(n: str) -> bool:
@@ -1388,7 +1388,7 @@ def find_pruned_positions(
     max_indices_per_param: int = 10000,
 ) -> Dict[str, Any]:
     """
-    返回：
+    Returns:
       {
         "per_param": {
             <param_name>: {
@@ -1398,8 +1398,8 @@ def find_pruned_positions(
                 "pruned_ratio": float,
                 "zeros_in_orig": int,
                 "zeros_in_pruned": int,
-                # 可选:
-                # "pruned_flat_indices": np.ndarray (最多 max_indices_per_param 个)
+                # Optional:
+                # "pruned_flat_indices": np.ndarray (at most max_indices_per_param entries)
                 # "indices_truncated": bool
             },
             ...
@@ -1480,8 +1480,8 @@ def find_pruned_positions(
 
 def get_pruned_param_names(report, min_pruned_count: int = 1):
     """
-    从 find_pruned_positions 的 report 中，拿到所有被剪枝的“参数名”列表。
-    规则：pruned_count >= min_pruned_count
+    Extract the list of all pruned parameter names from the find_pruned_positions report.
+    Rule: pruned_count >= min_pruned_count
     """
     pruned_params = []
     for name, info in report["per_param"].items():
@@ -1494,8 +1494,8 @@ def get_pruned_param_names(report, min_pruned_count: int = 1):
 
 def _parent_module_name(param_name: str):
     """
-    把 'xxx.weight' 或 'xxx.bias' 这样的参数名映射到父 module 名 'xxx'。
-    如果没有 .weight/.bias 后缀，就返回去掉最后一段的父级（尽量保守）。
+    Map parameter names like 'xxx.weight' or 'xxx.bias' to their parent module name 'xxx'.
+    If there is no .weight/.bias suffix, return the parent by stripping the last segment (conservative).
     """
     if param_name.endswith(".weight") or param_name.endswith(".bias"):
         return param_name.rsplit(".", 1)[0]
@@ -1567,9 +1567,9 @@ def restore_pruned_weights_rowwise_strict_no_signalign(
         missing_in_a = set(b_params.keys()) - set(a_params.keys())
         missing_in_b = set(a_params.keys()) - set(b_params.keys())
         raise ValueError(
-            "参数名不一致：\n"
-            f"  只在原模型缺失: {sorted(missing_in_a)}\n"
-            f"  只在剪枝模型缺失: {sorted(missing_in_b)}"
+            "Parameter name mismatch:\n"
+            f"  Missing only in original model: {sorted(missing_in_a)}\n"
+            f"  Missing only in pruned model: {sorted(missing_in_b)}"
         )
 
     def _is_target_weight(n: str) -> bool:
@@ -1715,7 +1715,7 @@ def quantize_selected_modules(unet, target_modules):
 
 
 def replace_module(model: nn.Module, module_path: str, new_module: nn.Module):
-    """根据路径把 model 中的某个模块替换为 new_module"""
+    """Replace a submodule in model at the given path with new_module."""
     parent_name = ".".join(module_path.split(".")[:-1])
     child_name = module_path.split(".")[-1]
 
