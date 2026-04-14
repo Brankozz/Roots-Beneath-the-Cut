@@ -12,9 +12,7 @@ Code for the paper - **Roots Beneath the Cut: Uncovering the Risk of Concept Rev
 
 Pruning-based unlearning has recently emerged as a fast, training-free, and data-independent approach to remove undesired concepts from diffusion models. It promises high efficiency and robustness, offering an attractive alternative to traditional fine-tuning or editing-based unlearning. However, in this paper we uncover a hidden danger behind this promising paradigm. We find that the locations of pruned weights, typically set to zero during unlearning, can act as side-channel signals that leak critical information about the erased concepts. To verify this vulnerability, we design a novel attack framework capable of reviving erased concepts from pruned diffusion models in a fully data-free and training-free manner. Our experiments confirm that pruning-based unlearning is not inherently secure, as erased concepts can be effectively revived without any additional data or retraining. Extensive experiments on diffusion-based unlearning based on concept related weights lead to the conclusion: once the critical concept-related weights in diffusion models are identified, our method can effectively recover the original concept regardless of how the weights are manipulated. Finally, we explore potential defense strategies and advocate safer pruning mechanisms that conceal pruning locations while preserving unlearning effectiveness, providing practical insights for designing more secure pruning-based unlearning frameworks.
 
-## Experiments
-
-### Environment Setup
+## Environment Setup
 
 Create Environment from the `environment.yml` file.
 
@@ -24,7 +22,7 @@ Create Environment from the `environment.yml` file.
 
 `conda activate concept_revival`
 
-### Obtain the Unlearned Model
+## Obtain the Unlearned Model
 
 <p align="center">
 <img src="Image/unlearn.png" width="50%">
@@ -50,7 +48,7 @@ The argument `skill_ratio` denotes the sparsity level which defines the top-k% n
 
 **Note: You can also use your own unlearned model obtained by detecting concept-related weights, as long as the locations of the concept-related weights remain identifiable.**
 
-### Matrix Completion
+## Matrix Completion
 
 <p align="center">
 <img src="Image/matrix_completion.png" width="50%">
@@ -64,7 +62,7 @@ To recover the pruned matrix, run the following-
 
 `python -m revive.matrix_completion_lterative_Soft-Thresholded_SVD_gpu --target="$target"`
 
-### Top-K Sign Retention
+## Top-K Sign Retention
 
 To preserve the signs with Top-k magnitudes, run the following-
 
