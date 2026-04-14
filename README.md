@@ -63,3 +63,11 @@ To recover the pruned matrix, run the following-
 `python -m revive.read_weights --target="$target"`
 
 `python -m revive.matrix_completion_lterative_Soft-Thresholded_SVD_gpu --target="$target"`
+
+### Top-K Sign Retention
+
+To preserve the signs with Top-k magnitudes, run the following-
+
+`python -m revive.top_k_sign_retention --target="$target" --top_ratio="$top_ratio"`
+
+You could try `top_ratio` from `(0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8)`, as the recovery performance varies across different concepts for this parameter. All experiments in the paper use `0.6`.
