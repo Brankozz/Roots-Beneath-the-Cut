@@ -38,6 +38,6 @@ To obtain the unlearned model for a concept `<target>`, run the following-
 
 &nbsp; 2. Nudity - `naked`. Example - base prompt = `a photo of a man` and target prompt = `a photo of a naked man`
 
-&nbsp; 3. Objects (Imagenette classes) - `parachute, golf ball, garbage truck, cassette player, church, tench, english springer, french horn, chain saw, gas pump`.
+&nbsp; 3. Objects (Imagenette classes) - `golf ball, parachute, church, french horn, chain saw, gas pump, candle, mountain bike, racket, school bus, spider web, starfish`.
 
 &nbsp; Example - base prompt = `a room` and target prompt = `a parachute in a room`
