@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 from argparse import ArgumentParser
-os.chdir("/home/cz06540/concept-prune/wanda")
+# os.chdir("/home/cz06540/concept-prune/revive")
 from utils import get_prompts, Config, get_sd_model
 
 
