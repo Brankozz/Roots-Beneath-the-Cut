@@ -102,7 +102,7 @@ We evaluate nudity in images using the [NudeNet detector](https://pypi.org/proje
 
 ### Object Erasing
 
-To evaluate object erasure, run
+To evaluate related classes, run
 
 `python benchmarking/object_erase.py --target <object> --baseline concept-prune --removal_mode erase --ckpt_name <path to checkpoint>`
 
