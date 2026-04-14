@@ -79,3 +79,35 @@ You could try `top_ratio` from `(0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8)`, as the rec
 To maximize the magnitudes of remained signs, run the following-
 
 `python revive.neuron_max_scaling --target="$target" --csv_folder "path"`
+
+## Evaluation
+
+### Artist Styles
+
+To evaluate artist style erasure for `Van Gogh, Monet, Pablo Picasso, Da Vinci, Salvador Dali`, run
+
+`python benchmarking/artist_erasure.py --target <target> --baseline concept-prune --ckpt_name <path to checkpoint>`
+
+We created a dataset of 50 prompts using ChatGPT for different artists such that each prompt contains the painting name along with the name of the artist. These prompts are available in `datasets/`. The script saves images and a json files with CLIP metric reported in the paper in the `results/` folder.
+
+### Nudity
+
+To evaluate nudity erasure on the I2P dataset, run
+
+`python benchmarking/nudity_eval.py --eval_dataset i2p --baseline 'concept-prune' --gpu 0 --ckpt_name <path to checkpoint>`
+
+To run on black-box adversarial prompt datasets, [MMA](https://openaccess.thecvf.com/content/CVPR2024/papers/Yang_MMA-Diffusion_MultiModal_Attack_on_Diffusion_Models_CVPR_2024_paper.pdf) and [Ring-A-Bell](https://arxiv.org/abs/2310.10012), replace `i2p` with `mma` and `ring-a-bell` respectively.
+
+We evaluate nudity in images using the [NudeNet detector](https://pypi.org/project/nudenet/). The script saves images and a json files with NudeNet scores reported in the paper in the `results/` folder.
+
+### Object Erasing
+
+To evaluate object erasure, run
+
+`python benchmarking/object_erase.py --target <object> --baseline concept-prune --removal_mode erase --ckpt_name <path to checkpoint>`
+
+To check interference of concept removal with unrelated classes, run
+
+`python benchmarking/object_erase.py --target <object> --baseline concept-prune --removal_mode keep --ckpt_name <path to checkpoint>`
+
+where `<object>` is the name of a class in ImageNette classes. The script saves images and a json files with ResNet50 accuracies reported in the paper in the `results/` folder.
