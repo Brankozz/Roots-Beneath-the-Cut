@@ -23,3 +23,11 @@ Create Environment from the `environment.yml` file.
 `conda env create -f environment.yml`
 
 `conda activate concept_revival`
+
+### Obtain the Unlearned Model
+
+To obtain the unlearned model for a concept `<target>`, run the following-
+
+`python revive.wanda --target="$target" --skill_ratio 0.02`
+
+`python revive.save_union_over_time --target="$target" --timesteps 10 --skill_ratio 0.02`
