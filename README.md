@@ -31,3 +31,13 @@ To obtain the unlearned model for a concept `<target>`, run the following-
 `python revive.wanda --target="$target" --skill_ratio 0.02`
 
 `python revive.save_union_over_time --target="$target" --timesteps 10 --skill_ratio 0.02`
+
+`<target>` is the concept that we want to erase. Replace `<target>` with any of -
+
+&nbsp; 1. Artist Styles - `Van Gogh, Monet, Pablo Picasso, Da Vinci, Salvador Dali`. Example - base prompt = `a cat` and target prompt = `a cat in the style of Van Gogh`
+
+&nbsp; 2. Nudity - `naked`. Example - base prompt = `a photo of a man` and target prompt = `a photo of a naked man`
+
+&nbsp; 3. Objects (Imagenette classes) - `parachute, golf ball, garbage truck, cassette player, church, tench, english springer, french horn, chain saw, gas pump`.
+
+&nbsp; Example - base prompt = `a room` and target prompt = `a parachute in a room`
