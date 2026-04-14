@@ -16,7 +16,7 @@ dependencies:
   - pytorch=2.4.*=py3.10_cuda12.1_cudnn9.1.0_0
   - torchvision=0.19.*=py310_cu121
   - torchaudio=2.4.*=py310_cu121
-  - pytorch-cuda=12.1  # ✅ 自动安装 CUDA 运行库
+  - pytorch-cuda=12.1  
   - pytorch-mutex=1.0=cuda
   - ffmpeg
   - cairo
@@ -118,4 +118,3 @@ dependencies:
       - xformers==0.0.28.post1
       - yacs==0.1.8
 
-prefix: /home/cz06540/anaconda3/envs/H100-unlearn
