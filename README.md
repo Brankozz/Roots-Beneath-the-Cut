@@ -76,6 +76,10 @@ You could try `top_ratio` from `(0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8)`, as the rec
 
 ## Neuron Max Scaling
 
+<p align="center">
+<img src="Image/neuron_max.png" width="50%">
+</p>
+
 To maximize the magnitudes of remained signs, run the following-
 
 `python revive.neuron_max_scaling --target="$target" --csv_folder "path"`
