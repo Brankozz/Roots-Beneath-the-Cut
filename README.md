@@ -58,6 +58,8 @@ The argument `skill_ratio` denotes the sparsity level which defines the top-k% n
 
 To recover the pruned matrix, run the following-
 
+**(Note: You need to set the concept-related weights to zero first if you are using your own unlearned model.)**
+
 `python -m revive.read_weights --target="$target"`
 
 `python -m revive.matrix_completion_lterative_Soft-Thresholded_SVD_gpu --target="$target"`
