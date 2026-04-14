@@ -64,6 +64,10 @@ To recover the pruned matrix, run the following-
 
 ## Top-K Sign Retention
 
+<p align="center">
+<img src="Image/top_k.png" width="50%">
+</p>
+
 To preserve the signs with Top-k magnitudes, run the following-
 
 `python -m revive.top_k_sign_retention --target="$target" --top_ratio="$top_ratio"`
