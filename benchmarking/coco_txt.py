@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 from PIL import Image
 from argparse import ArgumentParser
-sys.path.append('/home/cz06540/concept-prune')
+# sys.path.append('/home/cz06540/concept-prune')
 from utils import load_models, coco_dataset
 
 imgs, anns = coco_dataset('../COCO-vqa', 'val', 480)
