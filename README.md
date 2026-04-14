@@ -65,7 +65,7 @@ To recover the pruned matrix, run the following-
 ## Top-K Sign Retention
 
 <p align="center">
-<img src="Image/top_k.png" width="25%">
+<img src="Image/top_k.png" width="50%">
 </p>
 
 To preserve the signs with Top-k magnitudes, run the following-
@@ -73,3 +73,9 @@ To preserve the signs with Top-k magnitudes, run the following-
 `python -m revive.top_k_sign_retention --target="$target" --top_ratio="$top_ratio"`
 
 You could try `top_ratio` from `(0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8)`, as the recovery performance varies across different concepts for this parameter. All experiments in the paper use `0.6`.
+
+## Neuron Max Scaling
+
+To maximize the magnitudes of remained signs, run the following-
+
+`python revive.neuron_max_scaling --target="$target" --csv_folder "path"`
