@@ -45,3 +45,7 @@ To obtain the unlearned model for a concept `<target>`, run the following-
 The argument `skill_ratio` denotes the sparsity level which defines the top-k% neurons considered for WANDA pruning. This command saves skilled neurons discovered for every timestep and layer in a different .pkl file as a sparse matrix. We recommend using `0.02` for all object and artist style tasks, and `0.01` for the nudity task.
 
 **Note: You can also use your own unlearned model obtained by detecting concept-related weights, as long as the locations of the concept-related weights remain identifiable.**
+
+<p align="center">
+<img src="Image/unlearn.png" width="50%">
+</p>
