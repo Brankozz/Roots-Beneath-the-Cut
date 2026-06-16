@@ -121,10 +121,12 @@ where `<object>` is the name of a class in ImageNette classes. The script saves 
 If you find our paper useful, please consider citing our work.
 
 ```
-@article{zhang2026roots,
-  title={Roots Beneath the Cut: Uncovering the Risk of Concept Revival in Pruning-Based Unlearning for Diffusion Models},
-  author={Zhang, Ci and Ding, Zhaojun and Yang, Chence and Liu, Jun and Zhai, Xiaoming and Huang, Shaoyi and Li, Beiwen and Ma, Xiaolong and Lu, Jin and Yuan, Geng},
-  journal={arXiv preprint arXiv:2603.06640},
-  year={2026}
+@InProceedings{Zhang_2026_CVPR,
+    author    = {Zhang, Ci and Ding, Zhaojun and Yang, Chence and Liu, Jun and Zhai, Xiaoming and Huang, Shaoyi and Li, Beiwen and Ma, Xiaolong and Lu, Jin and Yuan, Geng},
+    title     = {Roots Beneath the Cut: Uncovering the Risk of Concept Revival in Pruning-Based Unlearning for Diffusion Models},
+    booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+    month     = {June},
+    year      = {2026},
+    pages     = {35872-35881}
 }
 ```
