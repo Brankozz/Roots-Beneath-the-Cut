@@ -2,7 +2,7 @@
 
 Code for the paper - **Roots Beneath the Cut: Uncovering the Risk of Concept Revival in Pruning-Based Unlearning for Diffusion Models**
 
-[![arXiv](https://img.shields.io/badge/arXiv-2603.06640-b31b1b.svg)]([https://arxiv.org/abs/2603.06640](https://openaccess.thecvf.com/content/CVPR2026/papers/Zhang_Roots_Beneath_the_Cut_Uncovering_the_Risk_of_Concept_Revival_CVPR_2026_paper.pdf))
+[![arXiv](https://img.shields.io/badge/arXiv-2603.06640-b31b1b.svg)](https://openaccess.thecvf.com/content/CVPR2026/papers/Zhang_Roots_Beneath_the_Cut_Uncovering_the_Risk_of_Concept_Revival_CVPR_2026_paper.pdf)
 
 ## Introduction
 
